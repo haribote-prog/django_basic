@@ -6,3 +6,6 @@ lint:
 format:
 	poetry run isort .
 	poetry run black .
+
+run:
+	poetry run python basic/manage.py runserver
