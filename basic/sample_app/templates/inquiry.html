@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+お問い合わせ|Sample App
+{% endblock title %}
+
+{% block header %}
+<h1>ヘッダー</h1>
+{% endblock header %}
+
+{% block contents %}
+<div>
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+
+        {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}">
+                <strong>{{ field.label_tag }}</strong>
+            </label>
+            {{ field }}
+            {{ field.errors }}
+        </div>
+        {% endfor %}
+        <button type="submit">送信</button>
+    </form>
+</div>
+{% endblock contents %}

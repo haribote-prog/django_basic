@@ -1,12 +1,14 @@
-<html lang="ja">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>トップページ</title>
-</head>
+{% block title %}
+トップページ
+{% endblock title %}
 
-<body>
-    <h1>Hello World</h1>
-</body>
+{% block header %}
+<h1>ヘッダー</h1>
+{% endblock header %}
 
-</html>
+{% block contents %}
+<h1>コンテンツ</h1>
+{% endblock contents %}
