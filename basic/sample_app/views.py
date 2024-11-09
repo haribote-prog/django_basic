@@ -1,11 +1,15 @@
 import logging
+from typing import Any
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 
 from .forms import InquiryForm
+from .models import Diary
 
 logger = logging.getLogger(__name__)
 
@@ -24,3 +28,13 @@ class InquiryView(generic.FormView):
         messages.success(self.request, "メッセージを送信しました．")
         logger.info(f"Inquiry sent by {form.cleaned_data["name"]}")
         return super().form_valid(form)
+
+
+class DiaryListView(LoginRequiredMixin, generic.ListView):
+    model = Diary
+    template_name = "diary_list.html"
+    paginate_by = 2
+
+    def get_queryset(self) -> QuerySet[Any]:
+        diaries = Diary.objects.filter(user=self.request.user).order_by("-created_at")
+        return diaries

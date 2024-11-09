@@ -202,7 +202,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
 
 # ログイン/ログアウト後の遷移先を設定
-LOGIN_REDIRECT_URL = "sample_app:data_list"
+LOGIN_REDIRECT_URL = "sample_app:diary_list"
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 
 # ログアウトリンクのクリック一発でログアウトする設定
