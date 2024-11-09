@@ -213,3 +213,7 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
 
 # デフォルトのメール送信元を設定
 DEFAULT_FROM_EMAIL = os.environ.get("FROM_EMAIL")
+
+# 画像ファイルの設定 → 本の書き方ではurls.pyの部分が違っている
+# https://docs.djangoproject.com/ja/5.1/ref/contrib/staticfiles/
+MEDIA_URL = "/media/"

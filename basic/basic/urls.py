@@ -16,10 +16,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
+
+from . import settings_common, settings_dev
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("sample_app.urls")),
     path("accounts/", include("allauth.urls")),
 ]
+
+# 開発サーバーでメディアを配信できるようにする設定
+urlpatterns += staticfiles_urlpatterns()
