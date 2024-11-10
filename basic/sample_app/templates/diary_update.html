@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}日記編集{% endblock title %}
+
+{% block contents %}
+<h1>コンテンツ</h1>
+
+<!-- 日記編集 -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit">更新</button>
+    <a href="{% url 'sample_app:diary_detail' object.pk %}">キャンセル</a>
+</form>
+{% endblock contents %}
