@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}日記一覧{% endblock title %}
+
+{% block contents %}
+<h1>コンテンツ</h1>
+
+<!-- 新規作成 -->
+<a href="{% url 'sample_app:diary_create' %}">新規作成</a>
+
+<!-- 日記一覧表示 -->
+{% for diary in diary_list %}
+<a href="{% url 'sample_app:diary_detail' diary.pk %}">
+    <h2> {{ diary.title }} </h2>
+    <h3> {{ diary.content|truncatechars:20 }} </h3>
+</a>
+<p> {{ diary.created_at }} </p>
+{% empty %}
+<p>日記がありません．</p>
+{% endfor %}
+
+<!-- ページネーション -->
+
+{% if is_paginated %}
+<ul>
+    <!-- 前ページへのリンク -->
+    {% if page_obj.has_previous %}
+    <li>
+        <a href="?page={{ page_obj.previous_page_number }}">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    {% endif %}
+    <!-- ページ数表示 -->
+    {% for page_num in page_obj.paginator.page_range %}
+    {% if page_obj.number == page_num %}
+    <li class="active"><a href="#"> {{ page_num }} </a></li>
+    {% else %}
+    <li class=""><a href="#"> {{ page_num }} </a></li>
+    {% endif %}
+    {% endfor %}
+    <!-- 次ページへのリンク -->
+    {% if page_obj.has_next %}
+    <li>
+        <a href="?page={{ page_obj.next_page_number }}">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
+
+{% endblock contents %}

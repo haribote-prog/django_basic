@@ -1,0 +1,41 @@
+{% load static %}
+
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %}{% endblock title %} </title>
+    {% block head %}{% endblock head %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_logout' %}">Log Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'account_login' %}">Log In</a></li>
+        {% endif %}
+    </ul>
+
+    <a href="{% url 'sample_app:inquiry' %}">INQUIRY</a>
+
+    {% block header %}{% endblock header %}
+
+    {% if messages %}
+    <div>
+        <ul>
+            {% for message in messages %}
+            <li>
+                {{ message.tags }} : {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% block contents %}{% endblock contents %}
+</body>
+
+</html>

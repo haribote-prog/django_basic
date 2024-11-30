@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}日記削除{% endblock title %}
+
+{% block contents %}
+<h1>コンテンツ</h1>
+
+<!-- 日記作成 -->
+<form method="post">
+    {% csrf_token %}
+    <p>本当に削除しますか？</p>
+    <button type="submit">削除</button>
+    <a href="{% url 'sample_app:diary_detail' object.pk %}">キャンセル</a>
+</form>
+{% endblock contents %}
