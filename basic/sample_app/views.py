@@ -2,10 +2,10 @@ import logging
 from typing import Any
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models.query import QuerySet
-from django.forms import BaseModelForm
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -13,6 +13,16 @@ from .forms import DiaryCreateForm, InquiryForm
 from .models import Diary
 
 logger = logging.getLogger(__name__)
+
+
+class OnlyYouMixin(UserPassesTestMixin):
+    """日記レコードには作成ユーザーのみアクセスを許可するMixin"""
+
+    raise_exception = True
+
+    def test_func(self) -> bool:
+        diary = get_object_or_404(Diary, pk=self.kwargs["pk"])
+        return self.request.user == diary.user
 
 
 class IndexView(generic.TemplateView):
@@ -41,7 +51,8 @@ class DiaryListView(LoginRequiredMixin, generic.ListView):
         return diaries
 
 
-class DiaryDetailView(LoginRequiredMixin, generic.DetailView):
+class DiaryDetailView(LoginRequiredMixin, OnlyYouMixin, generic.DetailView):
+    # TODO: OnlyYouMixinは最後の引数にすると機能しない．原因を調べること
     model = Diary
     template_name = "diary_detail.html"
 
@@ -64,7 +75,7 @@ class DiaryCreateView(LoginRequiredMixin, generic.CreateView):
         return super().form_invalid(form)
 
 
-class DiaryUpdateView(LoginRequiredMixin, generic.UpdateView):
+class DiaryUpdateView(LoginRequiredMixin, OnlyYouMixin, generic.UpdateView):
     model = Diary
     template_name = "diary_update.html"
     form_class = DiaryCreateForm
@@ -81,7 +92,7 @@ class DiaryUpdateView(LoginRequiredMixin, generic.UpdateView):
         return super().form_invalid(form)
 
 
-class DiaryDeleteView(LoginRequiredMixin, generic.DeleteView):
+class DiaryDeleteView(LoginRequiredMixin, OnlyYouMixin, generic.DeleteView):
     model = Diary
     template_name = "diary_delete.html"
     success_url = reverse_lazy("sample_app:diary_list")
